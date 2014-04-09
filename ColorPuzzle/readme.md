@@ -127,6 +127,20 @@ checking whether the game is finished, we will also ignore scoring.
 
 Run the game to verify that tiles change color as expected.
 
+# Exercise 5
+
+In this exercise we will add code for counting the number of moves and a check for whether the game is
+finished. This entails a few minor changes to `paintBoardWithColor`.
+
+The number of moves should only be incremented if (at least) all of the following is true:
+
+ - The `newColor` is different from the `currentColor` of the board
+ - The game is not already finished
+ - Painting with the `newColor` is actually changing the number of `currentTiles`
+
+Try to figure out the rules for whether the game is finished and implement that, as well.
+
+
 // In a later exercise...:
 *Note:* The calculation could be prone to excessive recursion and unnecessary recalculation of neighbors, so
 to ensure that your solutions performs well, you could change the following line in *MainActivity.fs*:
