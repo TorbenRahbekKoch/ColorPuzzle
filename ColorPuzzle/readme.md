@@ -164,6 +164,25 @@ and the score should be retained. Obviously `numberOfMoves` should be reset to 0
 
 Run the game through an entire level and verify that the button now does what it should.
 
+# Exercise 8
+
+The bulk of the game is now finished. We will now put in some polish here and there. The first place is to
+enable the loading and saving of a game, so Android can stop and start the app and we can restore the
+state.
+
+This is all initiated in `MainActivity.fs`, in the methods `OnSaveBoard` and `LoadBoard`. They use the
+ `Persistence` module in `GameBoard.fs` - especially the functions `loadGameBoard` and `saveGameBoard`.
+
+Your task is now to implement these two functions, so that the state of an entire `GameBoard` can be
+saved and loaded.
+
+*Note*: The current implementation in MainActivity.fs does not save the state when the application exits, which
+is typically what happens when you press the *Back* key. To test the save of the state you should use the *Home*
+key and then start the app again. Then verify that the colors, score, moves, etc. are the same.
+
+[You can see here how to save preferences when the back key is pressed.](http://stackoverflow.com/questions/12171320/save-the-state-when-back-buton-is-pressed)
+
+
 
 // In a later exercise...:
 *Note:* The calculation could be prone to excessive recursion and unnecessary recalculation of neighbors, so
