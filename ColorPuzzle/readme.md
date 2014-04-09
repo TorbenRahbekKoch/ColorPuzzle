@@ -180,11 +180,26 @@ saved and loaded.
 is typically what happens when you press the *Back* key. To test the save of the state you should use the *Home*
 key and then start the app again. Then verify that the colors, score, moves, etc. are the same.
 
+# Exercise 9
+
+You may have noticed that the board is not placed in the middle. In this exercise you should correct that and you 
+should also make it so that the *Next* button is only visible when it should be, that is, when the game is
+in a finished state.
+
+One of these tasks take place in `MainActivity.fs` and the other in `GameView.fs`.
+
+*Hint*: The property to use on the button is called Visibility and should be set to one of:
+
+- ViewStates.Visible
+- ViewStates.Invisible
+
+
+
+// In later exercises...:
+
 [You can see here how to save preferences when the back key is pressed.](http://stackoverflow.com/questions/12171320/save-the-state-when-back-buton-is-pressed)
 
 
-
-// In a later exercise...:
 *Note:* The calculation could be prone to excessive recursion and unnecessary recalculation of neighbors, so
 to ensure that your solutions performs well, you could change the following line in *MainActivity.fs*:
 
