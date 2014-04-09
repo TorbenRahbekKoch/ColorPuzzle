@@ -110,6 +110,8 @@ module GameBoard =
     let paintBoardWithColor gameBoard newColor =
         if gameBoard.isFinished then
             gameBoard
+        elif gameBoard.currentColor = newColor then
+            gameBoard
         else
             let sizeX = gameBoard.sizeX
             let sizeY = gameBoard.sizeY

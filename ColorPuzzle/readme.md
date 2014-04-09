@@ -140,6 +140,10 @@ The number of moves should only be incremented if (at least) all of the followin
 
 Try to figure out the rules for whether the game is finished and implement that, as well.
 
+# Exercise 6
+
+
+
 
 // In a later exercise...:
 *Note:* The calculation could be prone to excessive recursion and unnecessary recalculation of neighbors, so
