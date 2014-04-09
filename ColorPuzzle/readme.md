@@ -142,6 +142,16 @@ Try to figure out the rules for whether the game is finished and implement that,
 
 # Exercise 6
 
+Now we will implement some scoring, so there is some excitement in the game ;)
+
+We will have two ways of obtaining some points:
+
+ - Whenever painting causes us to reach a corner
+ - Whenever painting causes the entire surface to be same color (the game is finished)
+
+You can choose yourself what kind of point system you have. The exercise solution has an example of one way
+to do it. But ofcourse it would be obvious to have a system which gives more points the sooner (the fewer
+number of moves) you reach the goal.
 
 
 

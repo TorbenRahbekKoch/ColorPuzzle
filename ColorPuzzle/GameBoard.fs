@@ -116,6 +116,8 @@ module GameBoard =
             let sizeX = gameBoard.sizeX
             let sizeY = gameBoard.sizeY
 
+            let scoreDiff = sizeX * sizeY - gameBoard.numberOfMoves
+
             let tiles = [| for y in 0..sizeY-1 ->
                             [|for x in 0..sizeX-1 ->
                                let tile = gameBoard.tiles.[y].[x]
@@ -139,12 +141,28 @@ module GameBoard =
                 if newCurrentTiles.Count = gameBoard.currentTiles.Count then
                     gameBoard
                 else          
-                    { gameBoard with
-                        currentColor  = newColor
-                        tiles         = tiles
-                        currentTiles  = newCurrentTiles
+                    let oldTopRightTile = gameBoard.tiles.[0].[sizeX-1]
+                    let oldBottomRightTile = gameBoard.tiles.[sizeY-1].[sizeX-1]
+                    let oldBottomLeftTile = gameBoard.tiles.[sizeY-1].[0]
+                    let newTopRightTile = tiles.[0].[sizeX-1]
+                    let newBottomRightTile = tiles.[sizeY-1].[sizeX-1]
+                    let newBottomLeftTile = tiles.[sizeY-1].[0]
+
+                    let hasTile newTile oldTile =
+                        (Set.contains newTile newCurrentTiles) && not (Set.contains oldTile gameBoard.currentTiles)
+
+                    let newScore = gameBoard.score  
+                                 + (if hasTile newTopRightTile oldTopRightTile then scoreDiff else 0)
+                                 + (if hasTile newBottomRightTile oldBottomRightTile then scoreDiff else 0)
+                                 + (if hasTile newBottomLeftTile oldBottomLeftTile then scoreDiff else 0)
+
+                    { gameBoard with 
+                        currentColor = newColor
+                        score = newScore
+                        tiles = tiles 
+                        currentTiles = newCurrentTiles
                         numberOfMoves = gameBoard.numberOfMoves + 1
-                    }
+                     }
 
     module Persistence =
 
