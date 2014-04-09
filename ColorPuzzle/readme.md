@@ -193,15 +193,11 @@ One of these tasks take place in `MainActivity.fs` and the other in `GameView.fs
 - ViewStates.Visible
 - ViewStates.Invisible
 
+# Exercise 10
 
-
-// In later exercises...:
-
-[You can see here how to save preferences when the back key is pressed.](http://stackoverflow.com/questions/12171320/save-the-state-when-back-buton-is-pressed)
-
-
-*Note:* The calculation could be prone to excessive recursion and unnecessary recalculation of neighbors, so
-to ensure that your solutions performs well, you could change the following line in *MainActivity.fs*:
+We will in this exercise verify how your app performs. Especially the function `calculateCurrentTileSet` can - 
+depending on the implementation - be prone to excessive recursion and unnecessary recalculation of neighbors, so
+to ensure that your solution performs well, you should change the following line in `MainActivity.fs`:
 
     `this.gameBoard <- createGameBoard 5 5 7`
 
@@ -209,3 +205,16 @@ to e.g.
 
     `this.gameBoard <- createGameBoard 25 25 7
    
+Then start the game and play a full level. You will soon notice whether your implementation performs
+adequately. If not, the task is to optimize it!
+
+*Hint*: If your implementation of `calculateCurrentTileSet` is fully immutable you might want to look into a partly
+mutable implementation.
+
+
+
+
+// In later exercises...:
+
+[You can see here how to save preferences when the back key is pressed.](http://stackoverflow.com/questions/12171320/save-the-state-when-back-buton-is-pressed)
+
