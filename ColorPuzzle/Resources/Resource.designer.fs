@@ -23,10 +23,10 @@ namespace ColorPuzzle
     #nowarn "51" // address-of operator can occur in the code
     #nowarn "1183" // unused 'this' reference
     
-    exception ReturnException43ff0b866c60444c9f709ab01bbec07c of obj
-    exception ReturnNoneException43ff0b866c60444c9f709ab01bbec07c
+    exception ReturnException0ff4c69ccfd748a5876d07eb6ab9e786 of obj
+    exception ReturnNoneException0ff4c69ccfd748a5876d07eb6ab9e786
     [<AutoOpen>]
-    module FuncConvertFinalOverload43ff0b866c60444c9f709ab01bbec07c =
+    module FuncConvertFinalOverload0ff4c69ccfd748a5876d07eb6ab9e786 =
       // This extension member adds to the FuncConvert type and is the last resort member in the method overloading rules. 
       type global.Microsoft.FSharp.Core.FuncConvert with
           /// A utility function to convert function values from tupled to curried form

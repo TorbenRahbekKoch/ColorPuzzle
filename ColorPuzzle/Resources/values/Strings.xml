@@ -2,5 +2,5 @@
 <resources>
 	<string name="hello">Hello World, Click Me!</string>
 	<string name="app_name">ColorPuzzle</string>
-  	<string name="spaces">C</string>
+  	<string name="spaces">SP</string>
 </resources>
