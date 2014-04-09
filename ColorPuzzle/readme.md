@@ -153,6 +153,16 @@ You can choose yourself what kind of point system you have. The exercise solutio
 to do it. But ofcourse it would be obvious to have a system which gives more points the sooner (the fewer
 number of moves) you reach the goal.
 
+# Exercise 7
+
+Currently the *Next* button doesn't really do much. What we want it to do is to move the game to the next
+level. This, of course, should only happen when the game is actually finished.
+
+Clicking the button causes the invocation of the function `moveBoardToNextLevel`, which in it's current state
+simply returns the given `gameBoard`. Instead it should return a `gameBoard` which is one bigger on each side, 
+and the score should be retained. Obviously `numberOfMoves` should be reset to 0 (zero).
+
+Run the game through an entire level and verify that the button now does what it should.
 
 
 // In a later exercise...:
