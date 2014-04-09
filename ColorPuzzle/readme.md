@@ -211,10 +211,20 @@ adequately. If not, the task is to optimize it!
 *Hint*: If your implementation of `calculateCurrentTileSet` is fully immutable you might want to look into a partly
 mutable implementation.
 
+# Exercise 11
 
-
-
-// In later exercises...:
-
+The last exercise is to implement the saving of preferences when the Back key is pressed and the app is otherwise
+exited. 
 [You can see here how to save preferences when the back key is pressed.](http://stackoverflow.com/questions/12171320/save-the-state-when-back-buton-is-pressed)
+and take a look [here for how to propery save the preferences](https://forums.xamarin.com/discussion/8199/how-to-save-user-settings).
+
+*Note*: You cannot directly save an array of ints in the shared preferences, so you have to find another way.
+
+*Hint*: You should override the methods:
+
+ - OnBackPressed()
+ - OnDestroy()
+
+And it does take some reorganizing of the code in `MainActivity.fs`.
+
 
