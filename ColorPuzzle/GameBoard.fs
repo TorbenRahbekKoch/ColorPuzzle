@@ -105,10 +105,29 @@ module GameBoard =
         }
             
     let moveBoardToNextLevel gameBoard = 
-        gameBoard
+        gameBoard                   
 
     let paintBoardWithColor gameBoard newColor =
-        gameBoard                   
+        let sizeX = gameBoard.sizeX
+        let sizeY = gameBoard.sizeY
+
+        let tiles = [| for y in 0..sizeY-1 ->
+                        [|for x in 0..sizeX-1 ->
+                           let tile = gameBoard.tiles.[y].[x]
+                           if Set.contains tile gameBoard.currentTiles then
+                               { tile with color = newColor }
+                           else
+                               tile
+                        |]
+                    |]         
+
+        let newCurrentTiles = calculateCurrentTileSet sizeX sizeY tiles
+
+        { gameBoard with
+            currentColor = newColor
+            tiles        = tiles
+            currentTiles = newCurrentTiles
+        }
 
     module Persistence =
 

@@ -80,13 +80,52 @@ You may find it helpful to create a function
 which given a gameBoard and a tile will return a list of it's neighboring tiles.
 
 *Note*: The reason the two suggested functions do not simply take a `GameBoard` as parameter is that
-they are used before a `GameBoard` has been created.
+the functions are used before a `GameBoard` has been created.
 
 *Note*: The reason that the initial Set<Tile> is not simply the Tile from the upper-left corner is that
-there may already be neighboring Tile's in the same color.
+there may already be neighboring Tile's in the same color (due to the randomness).
 
 GO!
 
+# Exercise 4
+
+We will now implement the function `paintBoardWithColor`, which will be called each time one of the color buttons
+is clicked.
+
+Lets assume that the board looks like this (digits corresponding to colors):
+
+    1 1 1 2 3
+    1 2 4 3 5
+    5 6 1 3 7
+    5 3 7 5 6
+    1 3 2 5 6
+
+When painting the board with the color `2` the board will look like this:
+
+    2 2 2 2 3
+    2 2 4 3 5
+    5 6 1 3 7
+    5 3 7 5 6
+    1 3 2 5 6
+
+All the connected `1`s in the upper left corner are changed to `2`s.
+
+If we, on the other hand had painted with the color `4` the board would look like this:
+
+    4 4 4 2 3
+    4 2 4 3 5
+    5 6 1 3 7
+    5 3 7 5 6
+    1 3 2 5 6
+
+All the connected `1`s in the upper left corner are changed to `4`s.
+
+For this exercise we will ignore whether it is actually possible to change to a given color, we will ignore
+checking whether the game is finished, we will also ignore scoring.
+
+*Hint*: Use the calculateCurrentTileSet from the last exercise.
+
+Run the game to verify that tiles change color as expected.
 
 // In a later exercise...:
 *Note:* The calculation could be prone to excessive recursion and unnecessary recalculation of neighbors, so
