@@ -146,6 +146,7 @@ module GameBoard =
                     score = gameBoard.score + scoreDiff
                     tiles = tiles
                     isFinished = true
+                    numberOfMoves = gameBoard.numberOfMoves + 1
                  }
             else            
                 if newCurrentTiles.Count = gameBoard.currentTiles.Count then
