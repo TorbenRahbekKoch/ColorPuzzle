@@ -45,40 +45,32 @@ type MainActivity () =
         // Set our view from the "main" layout resource
         this.SetContentView (Resource_Layout.Main)
 
-        this.gameView <- base.FindViewById<GameView> Resource_Id.gameBoard
-        this.colorViewLayout <- base.FindViewById<LinearLayout> Resource_Id.colorViewLayout
-
-        this.movesText <- base.FindViewById<TextView> Resource_Id.textMoves
-        this.scoreText <- base.FindViewById<TextView> Resource_Id.textScore
-
-        this.nextLevelButton <- base.FindViewById<Button> Resource_Id.buttonNext
-        this.nextLevelButton.Click.Add(fun args -> this.NextLevel())
-
-        this.setColors(this.gameView.getColors())
-
-        if not (this.LoadBoard()) then
+        if savedInstanceState = null then
             this.gameBoard <- createGameBoard 5 5 7
+            this.gameView <- base.FindViewById<GameView> Resource_Id.gameBoard
+            this.colorViewLayout <- base.FindViewById<LinearLayout> Resource_Id.colorViewLayout
+
+            this.movesText <- base.FindViewById<TextView> Resource_Id.textMoves
+            this.scoreText <- base.FindViewById<TextView> Resource_Id.textScore
+
+            this.nextLevelButton <- base.FindViewById<Button> Resource_Id.buttonNext
+            this.nextLevelButton.Click.Add(fun args -> this.NextLevel())
+
+            this.setColors(this.gameView.getColors())
             this.gameView.setGameBoard this.gameBoard
-        
-        this.UpdateUIStates()
+        else
+            this.LoadBoard(savedInstanceState)
                           
     member this.setColors newColors =
-        let numberOfColors = newColors.Length
-        let totalWidth = base.WindowManager.DefaultDisplay.Width
-        let buttonWidth = (totalWidth / numberOfColors) - 10
-
-        Android.Util.Log.Debug("ColorPuzzle", "totalWidth: " + totalWidth.ToString()) |> ignore
-        Android.Util.Log.Debug("ColorPuzzle", "buttonWidth: " + buttonWidth.ToString()) |> ignore
-
-        let padding = buttonWidth / 2
+        let padding = 5
         let layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.MatchParent)
-        layoutParams.LeftMargin <- 4
-        layoutParams.RightMargin <- 4
+        layoutParams.LeftMargin <- 5
+        layoutParams.RightMargin <- 5
         let b = newColors
                 |> List.mapi(fun index color -> 
                                  let button = new Button(this)
                                  button.SetPadding(padding, 0, padding, 0)
-                                 //button.SetText(Resource_String.spaces)
+                                 button.SetText(Resource_String.spaces)
                                  button.SetMinimumWidth(button.Width + padding)
                                  button.Click.Add(fun args -> this.OnClick(button, color, index)) 
                                  button.SetBackgroundColor(color)
@@ -91,59 +83,32 @@ type MainActivity () =
         let newBoard = moveBoardToNextLevel this.gameBoard
         this.gameBoard <- newBoard
         this.gameView.setGameBoard this.gameBoard
-        this.UpdateUIStates()
+        this.movesText.Text <- this.gameBoard.numberOfMoves.ToString()
+        this.scoreText.Text <- this.gameBoard.score.ToString()
 
     member this.OnClick((button: Button), color, colorIndex) =
         button.Background.SetColorFilter(color, PorterDuff.Mode.Multiply)
         let newBoard = paintBoardWithColor this.gameBoard (TileColor(colorIndex))
         this.gameBoard <- newBoard
         this.gameView.setGameBoard this.gameBoard
-        this.UpdateUIStates()
-
-    member this.UpdateUIStates() =
         this.movesText.Text <- this.gameBoard.numberOfMoves.ToString()
         this.scoreText.Text <- this.gameBoard.score.ToString()
-        if this.gameBoard.isFinished then
-            this.nextLevelButton.Visibility <- ViewStates.Visible
-        else 
-            this.nextLevelButton.Visibility <- ViewStates.Invisible
-
-    override this.OnBackPressed() =
-        this.SaveBoard()
-        base.OnBackPressed()
-
-    override this.OnDestroy() = 
-        this.SaveBoard()
-        base.OnDestroy()
 
     override this.OnPause() =
         base.OnPause()
           
     override this.OnSaveInstanceState bundle =
-        this.SaveBoard()
+        this.SaveBoard(bundle)
 
-    member private this.SaveBoard() =
-        let sharedPreferences = Application.Context.GetSharedPreferences("ColorPuzzle", FileCreationMode.Private)
-        let preferenceEditor = sharedPreferences.Edit()
-        let valuesToSave = saveGameBoard this.gameBoard
-        let convertedValuesToSave = valuesToSave 
-                                    |> Array.fold(fun state item -> state + ";" + item.ToString()) ""
-        preferenceEditor.PutString("gameBoard", convertedValuesToSave) |> ignore
-        preferenceEditor.Commit() |> ignore
+    member private this.SaveBoard(bundle) =
+        let boardBundle = new Bundle()
+        boardBundle.PutIntArray("gameBoard", saveGameBoard this.gameBoard)
+        bundle.PutBundle(bundleKey, boardBundle)
 
+    member private this.LoadBoard(bundle) = 
+        let boardBundle = bundle.GetBundle bundleKey
 
-    member private this.LoadBoard() = 
-        let sharedPreferences = Application.Context.GetSharedPreferences("ColorPuzzle", FileCreationMode.Private)
-        if sharedPreferences = null then
-            false
-        else
-            let savedData = sharedPreferences.GetString("gameBoard", null)
-            if savedData = null then
-                false
-            else
-                let gameBoardData = savedData.Split([|";"|], StringSplitOptions.RemoveEmptyEntries)
-                                    |> Array.map(fun item -> Int32.Parse item)
-                this.gameBoard <- loadGameBoard gameBoardData
-                this.gameView.setGameBoard this.gameBoard
-                true
+        let gameBoardData = boardBundle.GetIntArray bundleKey
+        this.gameBoard <- loadGameBoard gameBoardData
+        this.gameView.setGameBoard this.gameBoard
 

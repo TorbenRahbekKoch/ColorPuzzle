@@ -13,7 +13,6 @@ open Android.Widget
 open ColorPuzzle.GameBoard
 open ColorPuzzle.GameBoard.Persistence
 open ColorPuzzle.GameView
-open ColorPuzzle.ColorView
 
 [<Activity (Label = "ColorPuzzle", MainLauncher = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)>]
 type MainActivity () =
@@ -37,6 +36,9 @@ type MainActivity () =
     [<DefaultValue>]
     val mutable scoreText : TextView
 
+    [<DefaultValue>]
+    val mutable nextLevelButton : Button
+
     override this.OnCreate (savedInstanceState) =
         base.OnCreate (savedInstanceState)
 
@@ -44,25 +46,21 @@ type MainActivity () =
         this.SetContentView (Resource_Layout.Main)
 
         if savedInstanceState = null then
-            this.gameBoard <- createGameBoard 25 25 7
+            this.gameBoard <- createGameBoard 5 5 7
             this.gameView <- base.FindViewById<GameView> Resource_Id.gameBoard
             this.colorViewLayout <- base.FindViewById<LinearLayout> Resource_Id.colorViewLayout
 
             this.movesText <- base.FindViewById<TextView> Resource_Id.textMoves
             this.scoreText <- base.FindViewById<TextView> Resource_Id.textScore
 
-            let nextLevelButton = base.FindViewById<Button> Resource_Id.buttonNext
-            nextLevelButton.Click.Add(fun args -> this.NextLevel())
+            this.nextLevelButton <- base.FindViewById<Button> Resource_Id.buttonNext
+            this.nextLevelButton.Click.Add(fun args -> this.NextLevel())
 
             this.setColors(this.gameView.getColors())
             this.gameView.setGameBoard this.gameBoard
         else
-            let bundle = savedInstanceState.GetBundle bundleKey
-            this.LoadBoard(bundle)
-        
-
-
-
+            this.LoadBoard(savedInstanceState)
+                          
     member this.setColors newColors =
         let padding = 5
         let layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.MatchParent)
@@ -78,10 +76,9 @@ type MainActivity () =
                                  button.SetBackgroundColor(color)
                                  button.SetTextColor(color)
                                  this.colorViewLayout.AddView(button, layoutParams)
-                                 button)
+                                 button)        
         ()
-
-
+    
     member this.NextLevel() =
         let newBoard = moveBoardToNextLevel this.gameBoard
         this.gameBoard <- newBoard
@@ -97,19 +94,20 @@ type MainActivity () =
         this.movesText.Text <- this.gameBoard.numberOfMoves.ToString()
         this.scoreText.Text <- this.gameBoard.score.ToString()
 
-
     override this.OnPause() =
         base.OnPause()
           
-
     override this.OnSaveInstanceState bundle =
+        this.SaveBoard(bundle)
+
+    member private this.SaveBoard(bundle) =
         let boardBundle = new Bundle()
-
         boardBundle.PutIntArray("gameBoard", saveGameBoard this.gameBoard)
-
         bundle.PutBundle(bundleKey, boardBundle)
 
-    member private this.LoadBoard(boardBundle) = 
+    member private this.LoadBoard(bundle) = 
+        let boardBundle = bundle.GetBundle bundleKey
+
         let gameBoardData = boardBundle.GetIntArray bundleKey
         this.gameBoard <- loadGameBoard gameBoardData
         this.gameView.setGameBoard this.gameBoard
