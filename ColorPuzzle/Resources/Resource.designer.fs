@@ -23,10 +23,10 @@ namespace ColorPuzzle
     #nowarn "51" // address-of operator can occur in the code
     #nowarn "1183" // unused 'this' reference
     
-    exception ReturnException0ff4c69ccfd748a5876d07eb6ab9e786 of obj
-    exception ReturnNoneException0ff4c69ccfd748a5876d07eb6ab9e786
+    exception ReturnExceptione37943902189402e8dd936324374766c of obj
+    exception ReturnNoneExceptione37943902189402e8dd936324374766c
     [<AutoOpen>]
-    module FuncConvertFinalOverload0ff4c69ccfd748a5876d07eb6ab9e786 =
+    module FuncConvertFinalOverloade37943902189402e8dd936324374766c =
       // This extension member adds to the FuncConvert type and is the last resort member in the method overloading rules. 
       type global.Microsoft.FSharp.Core.FuncConvert with
           /// A utility function to convert function values from tupled to curried form
@@ -65,32 +65,35 @@ namespace ColorPuzzle
         
         (* partial *)Resource_Id () =
             static do Android.Runtime.ResourceIdManager.UpdateIdValues()
-            // aapt resource value: 0x7f050008
-            static member buttonNext = 2131034120
+            // aapt resource value: 0x7f060008
+            static member buttonNext = 2131099656
             
-            // aapt resource value: 0x7f050001
-            static member colorViewLayout = 2131034113
+            // aapt resource value: 0x7f060001
+            static member colorViewLayout = 2131099649
             
-            // aapt resource value: 0x7f050000
-            static member gameBoard = 2131034112
+            // aapt resource value: 0x7f060000
+            static member gameBoard = 2131099648
             
-            // aapt resource value: 0x7f050002
-            static member tableLayout1 = 2131034114
+            // aapt resource value: 0x7f060009
+            static member new_game = 2131099657
             
-            // aapt resource value: 0x7f050003
-            static member tableRow1 = 2131034115
+            // aapt resource value: 0x7f060002
+            static member tableLayout1 = 2131099650
             
-            // aapt resource value: 0x7f050005
-            static member textMoves = 2131034117
+            // aapt resource value: 0x7f060003
+            static member tableRow1 = 2131099651
             
-            // aapt resource value: 0x7f050007
-            static member textScore = 2131034119
+            // aapt resource value: 0x7f060005
+            static member textMoves = 2131099653
             
-            // aapt resource value: 0x7f050006
-            static member textView10 = 2131034118
+            // aapt resource value: 0x7f060007
+            static member textScore = 2131099655
             
-            // aapt resource value: 0x7f050004
-            static member textView7 = 2131034116
+            // aapt resource value: 0x7f060006
+            static member textView10 = 2131099654
+            
+            // aapt resource value: 0x7f060004
+            static member textView7 = 2131099652
             (* Member of type 'CodeTypeConstructor' is not supported by the CodeDOM provider and was omitted *)
 
 
@@ -107,15 +110,25 @@ namespace ColorPuzzle
     
     and
         
+        (* partial *)Resource_Menu () =
+            static do Android.Runtime.ResourceIdManager.UpdateIdValues()
+            // aapt resource value: 0x7f050000
+            static member menu = 2131034112
+            (* Member of type 'CodeTypeConstructor' is not supported by the CodeDOM provider and was omitted *)
+
+
+    
+    and
+        
         (* partial *)Resource_String () =
             static do Android.Runtime.ResourceIdManager.UpdateIdValues()
-            // aapt resource value: 0x7f040001
-            static member app_name = 2130968577
-            
             // aapt resource value: 0x7f040000
-            static member hello = 2130968576
+            static member app_name = 2130968576
             
             // aapt resource value: 0x7f040002
-            static member spaces = 2130968578
+            static member new_game = 2130968578
+            
+            // aapt resource value: 0x7f040001
+            static member spaces = 2130968577
             (* Member of type 'CodeTypeConstructor' is not supported by the CodeDOM provider and was omitted *)
 

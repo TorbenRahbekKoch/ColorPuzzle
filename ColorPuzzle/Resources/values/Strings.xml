@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="hello">Hello World, Click Me!</string>
-	<string name="app_name">ColorPuzzle</string>
+	<string name="app_name">Color Puzzle</string>
   	<string name="spaces">SP</string>
+  	<string name="new_game">New game</string>
 </resources>

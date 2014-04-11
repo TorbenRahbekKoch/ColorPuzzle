@@ -64,15 +64,19 @@ type MainActivity () =
         this.SetNextLevelButtonVisibility()
                           
     member this.setColors newColors =
-        let padding = 5
+        let numberOfColors = newColors.Length
+        let totalWidth = base.WindowManager.DefaultDisplay.Width
+        let buttonWidth = (totalWidth / numberOfColors) - 10
+
+        let padding = buttonWidth / 2
         let layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.MatchParent)
-        layoutParams.LeftMargin <- 5
-        layoutParams.RightMargin <- 5
+        layoutParams.LeftMargin <- 4
+        layoutParams.RightMargin <- 4
         let b = newColors
                 |> List.mapi(fun index color -> 
                                  let button = new Button(this)
                                  button.SetPadding(padding, 0, padding, 0)
-                                 button.SetText(Resource_String.spaces)
+                                 //button.SetText(Resource_String.spaces)
                                  button.SetMinimumWidth(button.Width + padding)
                                  button.Click.Add(fun args -> this.OnClick(button, color, index)) 
                                  button.SetBackgroundColor(color)

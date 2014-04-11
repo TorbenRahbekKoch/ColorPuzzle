@@ -213,7 +213,7 @@ mutable implementation.
 
 # Exercise 11
 
-The last exercise is to implement the saving of preferences when the Back key is pressed and the app is otherwise
+This exercise is to implement the saving of preferences when the Back key is pressed and the app is otherwise
 exited. 
 [You can see here how to save preferences when the back key is pressed.](http://stackoverflow.com/questions/12171320/save-the-state-when-back-buton-is-pressed)
 and take a look [here for how to propery save the preferences](https://forums.xamarin.com/discussion/8199/how-to-save-user-settings).
@@ -227,4 +227,11 @@ and take a look [here for how to propery save the preferences](https://forums.xa
 
 And it does take some reorganizing of the code in `MainActivity.fs`.
 
+# Exercise 12
+
+There is currently no possibility to start a new game. The task in this exercise is to add a possibility to do
+just that.
+
+One way to do it is to use an Options Menu. Another is to add a button on the screen. In this exercise it is up to 
+you to figure out the best way and to research how to do it.
 
