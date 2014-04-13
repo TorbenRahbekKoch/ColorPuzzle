@@ -61,26 +61,20 @@ the `createGameBoard` function.
 
 *Hint*: Move the responsibility to a separate function `calculateCurrentTileSet`:
 
-    `calculateCurrentTileSet: (sizeX: int) -> (sizeY: int) -> (tiles : Tile array array) -> Set<Tile>`
+    calculateCurrentTileSet: (sizeX: int) -> (sizeY: int) -> (tiles : Tile array array) -> Set<Tile>
 
 You may find it useful to have a local recursive function inside this function. It is also, of course, entirely
 possible to implement it in a fully imperative way.
-
-`Set.union` may also come in handy.
 
 *More hints*
 The `currentTiles` is a set of connected `Tile`s. This means that for each `Tile` - starting with the upper
 left corner - you look at the neigbors (left, right, up, down) and their color. If the color is the same
 as on the `Tile` you're currently looking at they should be included in the set.
 
-You may find it helpful to create a function
+This is a variant of [Flood Fill](http://en.wikipedia.org/wiki/Flood_fill)
 
-    `getNeighborTiles: (sizeX: int) -> (sizeY: int) -> (tile: Tile) -> (tiles: Tile array array) -> Tile list`
-
-which given a gameBoard and a tile will return a list of it's neighboring tiles.
-
-*Note*: The reason the two suggested functions do not simply take a `GameBoard` as parameter is that
-the functions are used before a `GameBoard` has been created.
+*Note*: The reason the suggested function does not simply take a `GameBoard` as parameter is that
+the function is used before a `GameBoard` has been created.
 
 *Note*: The reason that the initial Set<Tile> is not simply the Tile from the upper-left corner is that
 there may already be neighboring Tile's in the same color (due to the randomness).

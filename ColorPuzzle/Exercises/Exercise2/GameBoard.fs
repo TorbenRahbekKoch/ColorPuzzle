@@ -37,53 +37,88 @@ module GameBoard =
         isFinished    : bool
     }
 
-    let getNeighborTiles sizeX sizeY tile (tiles: Tile array array) =
-        let point = (tile.position.x, tile.position.y)
-        let leftNeighbor =
-            match point with
+    let calculateCurrentTileSet sizeX sizeY (tiles : Tile array array) : Set<Tile> = 
+        let westTile tile =
+            match tile.position.x, tile.position.y with
             | (x, y) when x > 0 -> Some(tiles.[y].[x-1])
             | _ -> None
 
-        let rightNeighbor =
-            match point with
+        let eastTile tile =
+            match tile.position.x, tile.position.y with
             | (x, y) when x < sizeX-1 -> Some(tiles.[y].[x+1])
             | _ -> None
-             
-        let topNeighbor =
-            match point with
+        
+        let northTile tile =
+            match tile.position.x, tile.position.y with
             | (x, y) when y > 0 -> Some(tiles.[y-1].[x])
             | _ -> None
-             
-        let bottomNeighbor =
-            match point with
+            
+        let southTile tile =
+            match tile.position.x, tile.position.y with
             | (x, y) when y < sizeY-1 -> Some(tiles.[y+1].[x])
-            | _ -> None             
+            | _ -> None
 
-        let neighborTiles = [leftNeighbor]
-                             @[rightNeighbor]
-                             @[topNeighbor]
-                             @[bottomNeighbor]
-                             |> List.choose id
-                             |> List.map(fun tile -> tiles.[tile.position.y].[tile.position.x])
-        neighborTiles
-                             
+        let rec goWest color tile tiles =
+            let w = westTile tile
+            match w with
+            | Some(west) when west.color = color -> goWest color west (west::tiles)
+            | _ -> tiles
 
-    let calculateCurrentTileSet sizeX sizeY (tiles : Tile array array) : Set<Tile> = 
-        let rec findSameColoredNeighbors currentTile (alreadyFound: Set<Tile>) : Set<Tile> =
-            let neighborTiles = getNeighborTiles sizeX sizeY currentTile  tiles
-                                |> List.filter (fun tile -> tile.color = currentTile.color)
-                                |> List.filter (fun item -> not (Set.contains item alreadyFound))
+        let rec goEast color tile tiles =
+            let e = eastTile tile
+            match e with
+            | Some(east) when east.color = color -> goEast color east (east::tiles)
+            | _ -> tiles
 
-            let mutable nowFound = Set.union (Set.ofList neighborTiles) alreadyFound
+        let q = Queue<Tile>()
+        let tileSet = List<Tile>()
 
-            for tile in neighborTiles do
-                let sameColorNeighbors = findSameColoredNeighbors tile nowFound
-                nowFound <- Set.union sameColorNeighbors nowFound
+        let paintedTiles =         
+            [| for y in 0..sizeY-1 -> 
+                [|for x in 0..sizeX-1 -> 
+                    { x = x; y = y; painted=false} |]  |] 
 
-            nowFound
+        let hasBeenPainted tile =
+            paintedTiles.[tile.position.y].[tile.position.x].painted
 
-        let rootTile = tiles.[0].[0]
-        findSameColoredNeighbors rootTile (Set [rootTile]) 
+        let paintTile tile =
+            paintedTiles.[tile.position.y].[tile.position.x] <- 
+                { x = tile.position.x; y = tile.position.y; painted = true }
+
+        q.Enqueue tiles.[0].[0]
+        let color = tiles.[0].[0].color
+
+        let rec workThroughQueue() =
+            match q.Count with
+            | 0 -> ()
+            | _ ->
+                let currentTile = q.Dequeue()
+                if currentTile.color = color && not (hasBeenPainted currentTile) then
+                    paintTile currentTile
+
+                    let line = List<Tile>()
+                    line.Add currentTile
+                    line.AddRange(goWest color currentTile [])
+                    line.AddRange(goEast color currentTile [])
+
+                    for tile in line do
+                        paintTile tile
+                        let n = northTile tile
+                        match n with
+                        | Some(n) when n.color = color -> q.Enqueue n
+                        | _ -> ()
+
+                        let s = southTile tile
+                        match s with
+                        | Some(s) when s.color = color -> q.Enqueue s
+                        | _ -> ()
+                workThroughQueue()
+
+        workThroughQueue()
+        paintedTiles
+        |> Array.collect (fun line -> line |> Array.filter (fun tile -> tile.painted))
+        |> Array.map(fun tile -> tiles.[tile.y].[tile.x])
+        |> Set.ofArray
 
     let createTiles sizeX sizeY numberOfColors =
         [| for y in 0..sizeY-1 -> 
