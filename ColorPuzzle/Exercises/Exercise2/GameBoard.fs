@@ -1,5 +1,6 @@
 ﻿namespace ColorPuzzle
 module GameBoard = 
+    open System.Collections.Generic
 
     type TileColor = TileColor of int
     with member x.value() = 
@@ -37,6 +38,12 @@ module GameBoard =
         isFinished    : bool
     }
 
+    type PaintedTile = {
+        x : int
+        y : int
+        painted : bool
+    }
+        
     let calculateCurrentTileSet sizeX sizeY (tiles : Tile array array) : Set<Tile> = 
         let westTile tile =
             match tile.position.x, tile.position.y with
