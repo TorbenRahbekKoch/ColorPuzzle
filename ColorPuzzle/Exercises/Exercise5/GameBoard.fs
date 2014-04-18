@@ -1,6 +1,8 @@
 ﻿namespace ColorPuzzle
 module GameBoard = 
 
+    open System.Collections.Generic
+
     type TileColor = TileColor of int
     with member x.value() = 
             match x with
@@ -9,6 +11,7 @@ module GameBoard =
     type Position = {
         x : int
         y : int
+        painted: bool
     }
 
     type Tile = {
@@ -123,7 +126,7 @@ module GameBoard =
     let createTiles sizeX sizeY numberOfColors =
         [| for y in 0..sizeY-1 -> 
             [|for x in 0..sizeX-1 -> 
-                {color = createRandomColor numberOfColors; position = {x = x; y = y} }|]  |] 
+                {color = createRandomColor numberOfColors; position = {x = x; y = y;painted = false} }|]  |] 
 
     let createGameBoard sizeX sizeY numberOfColors =
         let tiles = createTiles sizeX sizeY numberOfColors
@@ -176,7 +179,7 @@ module GameBoard =
                 else
                     { gameBoard with 
                         currentColor = newColor
-                        score = newScore
+                        score = 0
                         tiles = tiles 
                         currentTiles = newCurrentTiles
                         numberOfMoves = gameBoard.numberOfMoves + 1
@@ -205,7 +208,7 @@ module GameBoard =
         let loadTile (saved: int[]) position =
             { 
                 color = TileColor(saved.[position + 0])
-                position = { x = saved.[position + 1]; y = saved.[position + 2]}
+                position = { x = saved.[position + 1]; y = saved.[position + 2]; painted = false}
             }
 
         let loadGameBoard (saved: int[]) =
